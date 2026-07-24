@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# npm auth — never commit (holds registry tokens)
+.npmrc
+
 # design-sync build output + staged scripts (regenerated per run)
 ds-bundle/
 .ds-sync/
