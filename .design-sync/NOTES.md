@@ -103,10 +103,25 @@
 - `previews/` (13 files) compose against the current component APIs — if a
   component's props change shape, the affected preview(s) may need updating
   even though this NOTES.md won't automatically flag which ones.
-- **Publish gotcha**: npm 11.x does NOT honor `publishConfig.tag`, so a bare
+- **Publish gotcha #1**: npm 11.x does NOT honor `publishConfig.tag`, so a bare
   `npm publish` lands a prerelease on the `latest` dist-tag (verified on npm
   11.6.0 — dry-run printed "with tag latest" despite `publishConfig.tag:
   alpha`). Always publish via `npm run release:alpha` (forces `--tag alpha`)
   or an explicit `npm publish --tag alpha`. `publishConfig.access: public` IS
   honored. When a stable release is eventually cut, THAT one goes to `latest`
   via a plain `npm publish` (no `release:alpha`).
+- **Publish gotcha #2 (bigger, unavoidable)**: npm ALSO sets `latest` on a
+  package's very first publish regardless of `--tag` — confirmed after
+  publishing `0.1.0-alpha.0` with `--tag alpha` (2026-07-25):
+  `npm view @codelitdev/design-system dist-tags` showed
+  `{ alpha: '0.1.0-alpha.0', latest: '0.1.0-alpha.0' }`. There is no flag to
+  suppress this on a first publish, and `npm dist-tag` can only repoint
+  `latest` to an EXISTING version — there was no other version to repoint it
+  to. Net effect: right now a bare `npm install @codelitdev/design-system`
+  (no version, no tag) resolves to the alpha, exactly what the `alpha` tag was
+  meant to prevent. Consumers (CourseLit/MediaLit/FrontLit/SendLit) must pin
+  the exact version until a stable release exists. **This self-resolves the
+  moment a real stable version is published** (that publish moves `latest`
+  forward normally, since it's no longer a first publish) — no action needed
+  beyond remembering to actually cut and publish that stable version, and
+  until then, keep the README warning banner about this in place.

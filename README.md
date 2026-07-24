@@ -9,11 +9,19 @@ the preset and keep their own shadcn components.
 ## Install
 
 Published to npm as a public package. The current release line is a prerelease
-under the `alpha` dist-tag:
+under the `alpha` dist-tag.
+
+> [!WARNING]
+> **`latest` currently also points at `0.1.0-alpha.0`.** npm always sets
+> `latest` on a package's first-ever publish, regardless of `--tag` — this is
+> unavoidable until a real stable version is cut, at which point publishing it
+> moves `latest` forward automatically. Until then, **always pin the exact
+> version** — do not `npm install @codelitdev/design-system` bare, and do not
+> use a caret/tilde range (`^0.1.0-alpha.0` would still resolve to a
+> prerelease, which is at least explicit — but a bare install with no version
+> silently means "whatever `latest` is," which right now is this alpha).
 
 ```sh
-npm install @codelitdev/design-system@alpha
-# or a specific version
 npm install @codelitdev/design-system@0.1.0-alpha.0
 ```
 
