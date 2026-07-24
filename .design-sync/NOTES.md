@@ -8,7 +8,8 @@
   MediaLit, SendLit, FrontLit — all live today) can consume it. First publish was
   `0.1.0-alpha.0` under the `alpha` dist-tag. Older notes below may say "this
   repo" / "the SendLit repo" interchangeably — they mean this package.
-- No build step in this package: `package.json` has no `scripts` at all, and
+- No build step in this package: the only `scripts` entry is `release:alpha`
+  (a publish helper, not a build), and
   `main`/`types`/`exports['.']` all point straight at `src/index.ts` (raw
   TypeScript, compiled inline by whichever app consumes it). The converter is
   pointed at `--entry ./src/index.ts` directly rather than a `dist/` build —
@@ -102,3 +103,10 @@
 - `previews/` (13 files) compose against the current component APIs — if a
   component's props change shape, the affected preview(s) may need updating
   even though this NOTES.md won't automatically flag which ones.
+- **Publish gotcha**: npm 11.x does NOT honor `publishConfig.tag`, so a bare
+  `npm publish` lands a prerelease on the `latest` dist-tag (verified on npm
+  11.6.0 — dry-run printed "with tag latest" despite `publishConfig.tag:
+  alpha`). Always publish via `npm run release:alpha` (forces `--tag alpha`)
+  or an explicit `npm publish --tag alpha`. `publishConfig.access: public` IS
+  honored. When a stable release is eventually cut, THAT one goes to `latest`
+  via a plain `npm publish` (no `release:alpha`).

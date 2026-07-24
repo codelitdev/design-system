@@ -49,6 +49,20 @@ module.exports = {
 
 6. Logos: `@codelitdev/design-system/assets/logo-<product>.svg`.
 
+## Publishing
+
+Prereleases go under the `alpha` dist-tag so a plain `npm install` never grabs
+one. **Always publish with an explicit tag** — `publishConfig.tag` is not
+honored by npm 11.x, so a bare `npm publish` would land on `latest`:
+
+```sh
+npm run release:alpha            # → npm publish --tag alpha
+# add --otp=<code> if 2FA is enabled
+```
+
+Verify: `npm view @codelitdev/design-system dist-tags` should show the
+prerelease under `alpha` and leave `latest` untouched.
+
 ## License
 
 Apache-2.0 — see [LICENSE](./LICENSE).
