@@ -156,3 +156,14 @@
       npm dist-tag add @codelitdev/design-system@<new-version> latest
   `latest` only becomes truly correct when a stable version is published and
   takes it. Until then, keep the README warning banner in place.
+
+- **Bug fixed 2026-07-25 (0.1.0-alpha.2): global `a`/`a:hover` styling removed
+  from `tokens/typography.css`.** It set `text-decoration: underline` on hover
+  for EVERY bare `<a>`/framework `<Link>` in any consuming app — broke nav
+  items, sidebar links, and clickable cards in SendLit (`apps/web`) the
+  instant `styles.css` was imported, since nothing in that app opted out and
+  shadcn's own convention (`Button`'s `link` variant) already handles the
+  "I want an underlined link" case as an explicit opt-in. Replaced with a
+  `.cl-link` class (same colors/hover, but opt-in only) for prose-style inline
+  links. This shipped in 0.1.0-alpha.0/alpha.1 too — any app that imported
+  `styles.css` before alpha.2 had this bug, not just SendLit.

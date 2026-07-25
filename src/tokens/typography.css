@@ -29,7 +29,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a { color: var(--primary); text-decoration: none; }
-a:hover { color: var(--primary-hover); text-decoration: underline; }
+/* No global `a` styling — this stylesheet is imported by full apps where bare
+   <a>/<Link> are routinely used for navigation and clickable cards, and a
+   blanket hover-underline breaks that UX. Opt in explicitly with .cl-link for
+   inline text links (prose, footnotes, etc.); interactive apps should use the
+   Button `link` variant / registry Button instead. */
+.cl-link { color: var(--primary); text-decoration: none; }
+.cl-link:hover { color: var(--primary-hover); text-decoration: underline; }
 
 code, kbd, pre { font: var(--text-code); }
