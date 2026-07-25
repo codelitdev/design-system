@@ -46,16 +46,61 @@ module.exports = {
 };
 ```
 
-3. Scope the product on your root layout:
+3. Scope the product on the **`<html>`** element (not `<body>`):
 ```tsx
-<body data-product="sendlit">  {/* courselit | medialit | sendlit | frontlit, omit for CodeLit amber */}
+<html data-product="sendlit">  {/* courselit | medialit | sendlit | frontlit, omit for CodeLit amber */}
 ```
+> [!IMPORTANT]
+> Put `data-product` on `<html>`, not `<body>`. The product scope only overrides
+> `--primary`/`--ring`; any token you alias at `:root` that references `--primary`
+> (e.g. shadcn's `--sidebar-primary: var(--primary)`) resolves that `var()` **at the
+> declaring element**. If the override sits on `<body>` (a child of `:root`), those
+> `:root` aliases freeze to the base amber and never pick up the product accent —
+> while direct `bg-primary` utilities still turn green, producing a confusing split.
 
 4. Fonts: load Hanken Grotesk + Spline Sans Mono via `next/font/google` (or your framework's font loader), mapped to `--font-sans` / `--font-mono`.
 
-5. Components in `src/components/` (Button, IconButton, Badge, Card, Tabs, Dialog, Toast, Tooltip, Checkbox, Input, Radio, Select, Switch) are plain React + CSS classes (`components.css`), not Radix-based — treat them as reference/fallback. For shadcn's Radix-based primitives (Select, Dialog, Tabs, Tooltip), keep your app's existing shadcn components and port the visual deltas from `components.css` into their CVA variants instead of importing these directly.
+5. **Components — install from the shadcn registry** (see [Components](#components-shadcn-registry) below). These are real shadcn/Radix components styled to the design system, so your app's buttons/badges/cards *are* the DS's — no hand-porting. The plain-React `src/components/` classes (`components.css`) remain as visual reference only.
 
 6. Logos: `@codelitdev/design-system/assets/logo-<product>.svg`.
+
+## Components (shadcn registry)
+
+The design system ships its components as a **shadcn registry** so every product
+installs the *same* styled components (buttons, badges, cards, …) via the shadcn
+CLI — keeping all four apps on one component layer instead of each re-styling its
+own. They're standard shadcn/Radix components; they pull their look from the DS
+tokens, so make sure `@codelitdev/design-system/styles.css` is imported (above).
+
+Add the registry namespace to your app's `components.json`:
+
+```jsonc
+{
+  "registries": {
+    "@codelit": "https://raw.githubusercontent.com/codelitdev/design-system/main/public/r/{name}.json"
+  }
+}
+```
+
+Then install components like any other shadcn component:
+
+```sh
+npx shadcn@latest add @codelit/button @codelit/badge @codelit/card
+```
+
+Or install a single component directly by URL, no config:
+
+```sh
+npx shadcn@latest add https://raw.githubusercontent.com/codelitdev/design-system/main/public/r/button.json
+```
+
+Available: `button` (primary/secondary/outline/ghost/**soft**/destructive, sm/md/lg),
+`badge` (default/neutral/success/warning/destructive/outline, `dot`), `card`. More
+components are ported incrementally.
+
+**Maintainers:** component sources live in `registry/codelit/ui/`. After changing
+one, rebuild the served JSON with `pnpm registry:build` (→ `public/r/*.json`) and
+commit it — the raw-URL install serves those committed files.
 
 ## Publishing
 

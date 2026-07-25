@@ -8,8 +8,34 @@
   MediaLit, SendLit, FrontLit — all live today) can consume it. First publish was
   `0.1.0-alpha.0` under the `alpha` dist-tag. Older notes below may say "this
   repo" / "the SendLit repo" interchangeably — they mean this package.
-- No build step in this package: the only `scripts` entry is `release:alpha`
-  (a publish helper, not a build), and
+- **Three distinct outputs from this one repo — don't conflate them:**
+  1. **npm package** (`src/`, `tailwind-preset.js`) — tokens + Tailwind preset +
+     plain-React reference components. Consumed CSS-only by the apps.
+  2. **claude.ai/design sync** (the `.design-sync/` tooling + Claude Design
+     project "CodeLit Products") — uploads the DS so the design agent designs
+     with it. Direction: repo → Claude Design.
+  3. **shadcn registry** (`registry/codelit/ui/*.tsx` → built to `public/r/*.json`
+     via `pnpm registry:build`, i.e. `shadcn build`) — real shadcn/Radix
+     components styled to the DS spec, installed into the apps via
+     `npx shadcn add @codelit/<name>`. This is how the four products share ONE
+     component layer (added 2026-07-25: button, badge, card so far). The
+     registry components pull their look from the DS tokens (they assume
+     `@codelitdev/design-system/styles.css` is imported) and use raw-var
+     arbitrary utilities (`bg-[var(--primary-soft)]`) for product-scoped tokens
+     so they resolve at use-time under `data-product`. `public/r/*.json` is a
+     BUILT-but-COMMITTED artifact (the raw-URL install serves it) — rebuild +
+     commit when a `registry/` source changes.
+- **`data-product` goes on `<html>`, not `<body>`** (README step 3 fixed
+  2026-07-25). Root cause of a real bug in SendLit: `--sidebar-primary:
+  var(--primary)` declared at `:root` freezes to base amber when the
+  `data-product` override sits on `<body>` (a child), because a custom
+  property's `var()` resolves at the element the declaration applies to. Direct
+  `bg-primary` still went green → confusing amber-avatar/green-button split.
+  Putting `data-product` on `<html>` (= `:root`) fixes all such `:root` token
+  indirections at once.
+- No build step for the npm package itself: the `scripts` are `release:alpha`
+  (publish helper) and `registry:build` (shadcn registry, unrelated to the npm
+  tarball), and
   `main`/`types`/`exports['.']` all point straight at `src/index.ts` (raw
   TypeScript, compiled inline by whichever app consumes it). The converter is
   pointed at `--entry ./src/index.ts` directly rather than a `dist/` build —

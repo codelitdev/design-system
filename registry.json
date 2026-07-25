@@ -1,0 +1,45 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "codelit",
+  "homepage": "https://github.com/codelitdev/design-system",
+  "items": [
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "CodeLit button — primary, secondary, outline, ghost, soft, and destructive variants in sm/md/lg. Styled from design-system tokens.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "files": [
+        {
+          "path": "registry/codelit/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "CodeLit status pill on a soft color wash — default, neutral, success, warning, destructive, outline. Set `dot` for a status indicator.",
+      "dependencies": ["class-variance-authority"],
+      "files": [
+        {
+          "path": "registry/codelit/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "CodeLit content surface — border, soft warm shadow, 16px radius. Compose with CardHeader/Title/Description/Content/Footer.",
+      "files": [
+        {
+          "path": "registry/codelit/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    }
+  ]
+}
