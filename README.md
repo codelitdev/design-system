@@ -94,9 +94,33 @@ Or install a single component directly by URL, no config:
 npx shadcn@latest add https://raw.githubusercontent.com/codelitdev/design-system/main/public/r/button.json
 ```
 
-Available: `button` (primary/secondary/outline/ghost/**soft**/destructive, sm/md/lg),
-`badge` (default/neutral/success/warning/destructive/outline, `dot`), `card`. More
-components are ported incrementally.
+### Available components
+
+| Component | Notes |
+|---|---|
+| `button` | `primary` / `secondary` / `outline` / `ghost` / **`soft`** / `destructive`; `sm` `md` `lg` (30/36/42px) |
+| `icon-button` | Square icon-only; `ghost` / `outline`; `sm` `md` |
+| `badge` | `default` / `neutral` / `success` / `warning` / `destructive` / `outline`; `dot` prop |
+| `card` | + `CardHeader` `CardTitle` `CardDescription` `CardContent` `CardFooter` |
+| `input` | Accent-wash focus ring; `aria-invalid` → destructive |
+| `textarea` | Multiline form of `input` |
+| `label` | 13px semibold field label |
+| `checkbox` | 18px, 5px radius, accent fill when checked |
+| `radio-group` | + `RadioGroupItem` |
+| `switch` | 36×21 track, accent when on |
+| `select` | Trigger matches `input`; token-styled popover |
+| `tabs` | Segmented; active trigger lifts onto a card surface |
+| `dialog` | Warm scrim, 16px radius; full Radix parts |
+| `tooltip` | Dark chip; `TooltipProvider` included |
+| `toast` | Presentational card (`default`/`success`/`destructive`) — drive with your own queue |
+
+Install everything at once:
+
+```sh
+npx shadcn@latest add @codelit/button @codelit/icon-button @codelit/badge @codelit/card \
+  @codelit/input @codelit/textarea @codelit/label @codelit/checkbox @codelit/radio-group \
+  @codelit/switch @codelit/select @codelit/tabs @codelit/dialog @codelit/tooltip @codelit/toast
+```
 
 **Maintainers:** component sources live in `registry/codelit/ui/`. After changing
 one, rebuild the served JSON with `pnpm registry:build` (→ `public/r/*.json`) and
