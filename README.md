@@ -64,6 +64,8 @@ module.exports = {
 
 6. Logos: `@codelitdev/design-system/assets/logo-<product>.svg`.
 
+7. Loaders: `@codelitdev/design-system/assets/loader-<product>.svg`.
+
 ## Components (shadcn registry)
 
 The design system ships its components as a **shadcn registry** so every product

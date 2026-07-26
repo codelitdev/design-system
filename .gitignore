@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Windows/WSL Alternate Data Stream metadata (created when copying files in)
+*:Zone.Identifier
+
 # npm auth — never commit (holds registry tokens)
 .npmrc
 

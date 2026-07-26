@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><g><g fill="none" stroke="oklch(0.62 0.16 300)" stroke-width="2.6" stroke-linejoin="round">
+      <path d="M32,24 C28.8,19 28.8,13.5 32,10 C35.2,13.5 35.2,19 32,24 Z" stroke-dasharray="200" style="animation:cl-draw 1.8s ease-in-out infinite"></path>
+      <path d="M32,24 C28.8,19 28.8,13.5 32,10 C35.2,13.5 35.2,19 32,24 Z" transform="rotate(90 32 32)" stroke-dasharray="200" style="animation:cl-draw 1.8s ease-in-out infinite"></path>
+      <path d="M32,24 C28.8,19 28.8,13.5 32,10 C35.2,13.5 35.2,19 32,24 Z" transform="rotate(180 32 32)" stroke-dasharray="200" style="animation:cl-draw 1.8s ease-in-out infinite"></path>
+      <path d="M32,24 C28.8,19 28.8,13.5 32,10 C35.2,13.5 35.2,19 32,24 Z" transform="rotate(270 32 32)" stroke-dasharray="200" style="animation:cl-draw 1.8s ease-in-out infinite"></path>
+    </g></g></svg>
