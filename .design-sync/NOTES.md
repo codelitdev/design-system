@@ -167,3 +167,18 @@
   `.cl-link` class (same colors/hover, but opt-in only) for prose-style inline
   links. This shipped in 0.1.0-alpha.0/alpha.1 too — any app that imported
   `styles.css` before alpha.2 had this bug, not just SendLit.
+
+- **Gap found 2026-07-26 (0.1.0-alpha.3): `assets/loader-<product>.svg` references
+  an undefined animation.** Each loader SVG sets
+  `style="animation:cl-draw 1.8s ease-in-out infinite"` on its stroke paths
+  (with `stroke-dasharray="200"` set up for a draw-in effect), but no
+  `@keyframes cl-draw` is defined anywhere in the package's shipped CSS
+  (checked `src/components.css`, `src/styles.css`, `src/tokens/*.css` — none
+  of them declare it). Used as shipped, the SVG renders as a static mark, not
+  an animated loader — the `animation` property is simply a no-op without a
+  matching `@keyframes`. SendLit (`apps/web`) worked around this by using the
+  SVG as a static icon (`components/dashboard/loading.tsx`) rather than
+  guessing at the intended keyframes. Fix upstream: add `@keyframes cl-draw`
+  (a stroke-dashoffset sweep matching the `stroke-dasharray="200"` setup) to
+  `src/components.css` or a new `src/tokens/motion.css`, bump to alpha.4, and
+  update consumers to get the real animation.

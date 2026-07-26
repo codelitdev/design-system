@@ -20,6 +20,14 @@
       "files": [{ "path": "registry/codelit/ui/icon-button.tsx", "type": "registry:ui" }]
     },
     {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "CodeLit dropdown menu — matches the Select popover treatment (token-radius, popover shadow, muted item hover). Full Radix parts incl. checkbox/radio items and submenus.",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "files": [{ "path": "registry/codelit/ui/dropdown-menu.tsx", "type": "registry:ui" }]
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",

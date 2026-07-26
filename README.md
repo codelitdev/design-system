@@ -113,6 +113,7 @@ npx shadcn@latest add https://raw.githubusercontent.com/codelitdev/design-system
 | `select` | Trigger matches `input`; token-styled popover |
 | `tabs` | Segmented; active trigger lifts onto a card surface |
 | `dialog` | Warm scrim, 16px radius; full Radix parts |
+| `dropdown-menu` | Matches `select`'s popover treatment; full Radix parts incl. checkbox/radio items and submenus |
 | `tooltip` | Dark chip; `TooltipProvider` included |
 | `toast` | Presentational card (`default`/`success`/`destructive`) — drive with your own queue |
 
@@ -121,7 +122,8 @@ Install everything at once:
 ```sh
 npx shadcn@latest add @codelit/button @codelit/icon-button @codelit/badge @codelit/card \
   @codelit/input @codelit/textarea @codelit/label @codelit/checkbox @codelit/radio-group \
-  @codelit/switch @codelit/select @codelit/tabs @codelit/dialog @codelit/tooltip @codelit/toast
+  @codelit/switch @codelit/select @codelit/tabs @codelit/dialog @codelit/dropdown-menu \
+  @codelit/tooltip @codelit/toast
 ```
 
 **Maintainers:** component sources live in `registry/codelit/ui/`. After changing
