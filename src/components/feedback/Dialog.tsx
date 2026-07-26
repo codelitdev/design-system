@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 export interface DialogProps {
@@ -10,7 +12,7 @@ export interface DialogProps {
   style?: React.CSSProperties;
   children?: React.ReactNode;
 }
-import { Button } from "../actions/Button.jsx";
+import { Button } from "../actions/Button";
 
 /** Modal dialog with scrim. Controlled: open + onClose. */
 export function Dialog({ open, onClose, title, description, footer, children, style }: DialogProps) {

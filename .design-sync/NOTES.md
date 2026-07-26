@@ -223,3 +223,45 @@
   moment ANYTHING is imported by name, not just what that consumer
   actually uses — a stray implicit-any anywhere in `src/components/`
   breaks every app pinned to that version.
+
+- **Bug fixed 2026-07-26 (0.1.0-alpha.6): `Dialog.tsx` imported
+  `"../actions/Button.jsx"` — wrong extension; the real file is
+  `Button.tsx`, there is no `.jsx` sibling anywhere in `src/`. `tsc` never
+  caught this (bare/`.jsx`-suffixed specifiers both resolve fine under
+  `moduleResolution: bundler`), so it shipped in alpha.5 undetected by
+  typecheck. Surfaced the moment SendLit's Next.js/Turbopack dev server
+  actually bundled the package at runtime (needed `transpilePackages:
+  ["@codelitdev/design-system"]` in `next.config.mjs` first, to get past
+  a separate "Unknown module type" error from Turbopack trying to bundle
+  raw `.ts`/`.tsx` from `node_modules` without transpilation — see the
+  no-build-step note above). **Lesson:** `tsc --noEmit` on a consumer is
+  not sufficient to catch broken relative import paths in this package;
+  a real bundler run (dev server or build) is needed to catch these before
+  publishing.
+
+- **Added 2026-07-26 (0.1.0-alpha.6): `npm run check`** (`tsc --noEmit` +
+  an `esbuild` bundle of `src/index.ts`) plus `typescript`/`esbuild`/
+  `react`/`react-dom`/`@types/react-dom` devDependencies and a root
+  `tsconfig.json` (strict, `moduleResolution: bundler`, matching
+  consumer apps' settings) — none of this existed before, which is why
+  both bugs above shipped across two publishes with nobody able to
+  catch them locally. `release:alpha` now runs `check` first. The
+  esbuild step matters specifically because `tsc`'s `bundler` resolution
+  is lenient about wrong extensions (see the `Dialog.tsx` bug above);
+  esbuild does real filesystem resolution like Turbopack/webpack do, so
+  it catches that class of bug that `tsc` alone won't.
+
+- **Also fixed 2026-07-26 (0.1.0-alpha.6): missing `"use client"` on
+  every component that attaches an event handler prop (`onClick`/
+  `onChange`) directly to a DOM element, or uses a hook** — `Button`,
+  `IconButton`, `Dialog`, `Radio`, `Checkbox`, `Switch`, `Select`,
+  `Input`, `Tabs`, `Tooltip`. Not something `tsc`/`esbuild` can catch —
+  only bites when a consumer imports one of these directly into a
+  React Server Component (no `"use client"` ancestor), where Next.js
+  throws `Event handlers cannot be passed to Client Component props`
+  (or, for `Tabs`/`Tooltip`, the hook-only-in-Client-Component error)
+  at build time. Every current SendLit usage happens to already be
+  inside a `"use client"` page, so this hadn't surfaced yet — added
+  proactively before another product (CourseLit/MediaLit/FrontLit)
+  hits it from a Server Component. `Badge`, `Card`, `Loader`, `Toast`
+  have no event props and stay server-renderable.
