@@ -15,7 +15,7 @@ export interface TabsProps {
 export function Tabs({ tabs = [], value, defaultValue, onChange, variant = "segmented", style }: TabsProps) {
   const [internal, setInternal] = React.useState(defaultValue ?? tabs[0]);
   const active = value ?? internal;
-  const pick = (t) => {
+  const pick = (t: string) => {
     setInternal(t);
     if (onChange) onChange(t);
   };

@@ -203,3 +203,23 @@
   `assets/loader-*.svg` back (e.g. because design-sync's asset scraping
   finds them in an old branch), don't — the component is the source of
   truth now.
+
+- **Bug fixed 2026-07-26 (0.1.0-alpha.5): `Tabs.tsx` (plain-React reference
+  component) had an implicit-`any` parameter** (`const pick = (t) => {`,
+  no type — `tabs.map((t) => ...)` a few lines below is fine since array
+  methods get contextual typing from the array's element type, but a bare
+  `const x = (t) => {}` assignment has nothing to infer from). Harmless by
+  itself, but because `main`/`types` point straight at raw `src/index.ts`
+  (no build step — see the no-build-step note above), importing ANY named
+  export from `@codelitdev/design-system` pulls in the whole barrel file,
+  and `tsc` type-checks the entire re-export graph — including components
+  a consumer never actually uses. This had shipped unnoticed since the
+  package's original authoring because no consumer had ever imported a
+  named JS export before (SendLit only ever did `@import
+  ".../styles.css"`, a CSS-only import that never touches the JS/TS module
+  graph). First surfaced when SendLit imported `{ Loader }` for the
+  alpha.4 fix above. **Lesson for future components in `src/`:** every
+  file in the barrel is load-bearing for every consumer's typecheck the
+  moment ANYTHING is imported by name, not just what that consumer
+  actually uses — a stray implicit-any anywhere in `src/components/`
+  breaks every app pinned to that version.
