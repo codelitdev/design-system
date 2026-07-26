@@ -64,7 +64,13 @@ module.exports = {
 
 6. Logos: `@codelitdev/design-system/assets/logo-<product>.svg`.
 
-7. Loaders: `@codelitdev/design-system/assets/loader-<product>.svg`.
+7. Loaders — a drawn-from-the-logo spinner, not a static asset:
+```tsx
+import { Loader } from "@codelitdev/design-system";
+<Loader product="sendlit" size={32} />
+```
+Renders in `currentColor`, same as an icon component — wrap it (or an ancestor) in
+whatever sets the color you want, e.g. `className="text-primary"` for the product accent.
 
 ## Components (shadcn registry)
 

@@ -182,3 +182,24 @@
   (a stroke-dashoffset sweep matching the `stroke-dasharray="200"` setup) to
   `src/components.css` or a new `src/tokens/motion.css`, bump to alpha.4, and
   update consumers to get the real animation.
+
+- **Fixed 2026-07-26 (0.1.0-alpha.4): the `cl-draw` gap above was fixed via a
+  new `<Loader>` component, not a static SVG + CSS keyframe.** `assets/
+  loader-*.svg` (5 files) are deleted — do not reintroduce them. Reasoning:
+  the dead SVGs were meant to be dropped in via `<img src="...">` (see
+  SendLit's original `loading.tsx` workaround), which sandboxes out the
+  page's CSS entirely — a bare `@keyframes cl-draw` in `components.css`
+  would only ever animate an *inlined* copy of the SVG, never one loaded via
+  `<img>`/`next/image`. `<Loader product="..." size={...} />`
+  (`src/components/feedback/Loader.tsx`, exported from `src/index.ts` along
+  with `LoaderProps`) renders real inline `<svg>`/`<path>` markup so
+  `.cl-loader__path { animation: cl-draw ... }` (now actually defined, in
+  `components.css`) applies directly. Draws the product's own logo mark
+  (petals in sync), not a generic spinner. Colors via `currentColor` like an
+  icon component — no per-product color is baked in, so consumers wrap it
+  (or an ancestor) in whatever sets the color they want (e.g.
+  `className="text-primary"` for the scoped product accent under
+  `data-product`). If a future re-sync is tempted to add
+  `assets/loader-*.svg` back (e.g. because design-sync's asset scraping
+  finds them in an old branch), don't — the component is the source of
+  truth now.
